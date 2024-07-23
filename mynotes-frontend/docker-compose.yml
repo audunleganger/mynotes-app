@@ -1,0 +1,27 @@
+# Specifies the version of the Docker Compose file format. Needs to be compatible with the Docker Compose tool
+version: "3.4"
+# Begins the definition of services (containers that are run as part of the application)
+services:
+    # Defines a service named "vite_docker"
+    vite_docker:
+        # Specifies the Docker image to use for the service. Currently: node:alpine (minimal Node.js based on Alpine Linux)
+        image: node:alpine
+        # Sets the name of the container to vite_docker (what we'll see when we list containers on the system)
+        container_name: vite_docker
+        # Overrides the default entrypoint of the image with /bin/sh
+        entrypoint: /bin/sh
+        # Maps port 8000 of the container to port 8000 on the host
+        ports:
+            - 8000:8000
+        # Specifies the working directory inside the container (the location from which commands will be executed)
+        working_dir: /srv/app
+        # Begins the definition of volume mappings (directories to persist and share data between the host and container)
+        volumes:
+            # Specifies a bind mount, which mounts a directory from the host into the container
+            - type: bind
+              # Defines the source of the bind mount, which is the current directory (./) on the host
+              source: ./
+              # Sets the target for the bind mount inside the container, which is /srv/app (mount will be available from here inside the container)
+              target: /srv/app
+        # Allocates pseudo-TTY, which keeps the container running in an interactive mode
+        tty: true
