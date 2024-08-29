@@ -1,9 +1,9 @@
-import { useState, FormEvent } from "react";
+import React, { useState, FormEvent } from "react";
 
 const validUsernamePattern = /^[a-z0-9_]+$/;
 const validEmailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-export default function Register() {
+const Register: React.FC = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,10 +13,12 @@ export default function Register() {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        let containsError = false;
+
+        // Client side validation
         // Username validation
+        let containsError = false;
         if (!username) {
             setUsernameError("A username is required");
             containsError = true;
@@ -50,6 +52,18 @@ export default function Register() {
             return;
         }
         // Send the request to whatever we've set up to handle auth
+        const response = await fetch("http://localhost:3000/api/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, password, email }),
+        });
+        if (response.ok) {
+            alert("Register success");
+        } else {
+            alert("Register failed");
+        }
     };
 
     return (
@@ -102,3 +116,6 @@ export default function Register() {
         </>
     );
 }
+
+export default Register;
+

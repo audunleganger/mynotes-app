@@ -1,14 +1,19 @@
 import express from "express";
+import cors from "cors";
+import userRoutes from "./routes/userRoutes";
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
-const port = 3000;
 
-app.get("/", (req, res) => {
-    console.log("Revied request");
-    console.log(req);
-    res.send("Hello World!");
-});
+// Enable CORS for all routes
+app.use(cors());
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port} in a container`);
-});
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Routes
+app.use("/api/users", userRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
+export default app;

@@ -4,12 +4,10 @@ version: "3.4"
 services:
     # Defines a service named "vite_docker"
     vite_docker:
-        # Specifies the Docker image to use for the service. Currently: node:alpine (minimal Node.js based on Alpine Linux)
-        image: node:alpine
-        # Sets the name of the container to vite_docker (what we'll see when we list containers on the system)
-        container_name: vite_docker
-        # Overrides the default entrypoint of the image with /bin/sh
-        entrypoint: /bin/sh
+        build:
+            context: .
+            dockerfile: Dockerfile
+        # entrypoint: /bin/sh
         # Maps port 8000 of the container to port 8000 on the host
         ports:
             - 8000:8000
